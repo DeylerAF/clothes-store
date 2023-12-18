@@ -18,7 +18,7 @@ services:
             MYSQL_PASSWORD: ${DB_USER_PASSWORD} # Set a password for the new user
             # MYSQL_RANDOM_ROOT_PASSWORD: "1" # Set a random password for the root user
         volumes:
-            - ./db:/var/lib/mysql
+            - ./db:/var/lib/mysql:delegated
     # Define the phpMyAdmin service
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest # Use the latest phpMyAdmin image
@@ -42,6 +42,6 @@ services:
             WORDPRESS_DB_PASSWORD: ${DB_USER_PASSWORD}
             WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
         volumes:
-            - .:/var/www/html
+            - .:/var/www/html:delegated
 volumes:
     db:
