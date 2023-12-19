@@ -1,0 +1,54 @@
+version: "3.9"
+services:
+    db:
+        image: mysql:latest
+        restart: always
+        ports:
+            - "${DB_PORT}:3306" # Map the port on the host to the port on the container
+        command:
+            # - "--default-authentication-plugin=mysql_native_password" # Set the default authentication plugin for the database
+            # - "--port=${DB_PORT}" # Set the default port for the database
+            - "--character-set-server=utf8mb4" # Set the default character set for the database
+            - "--collation-server=utf8mb4_unicode_ci" # Set the default collation for the database
+        environment:
+            TZ: "UTC" # Set the default time zone for the database
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # Set the root password for the database
+            MYSQL_DATABASE: database # Create a new database for the application
+            MYSQL_USER: ${DB_USER_NAME} # Create a new non-root user for the database
+            MYSQL_PASSWORD: ${DB_USER_PASSWORD} # Set a password for the new user
+            # MYSQL_RANDOM_ROOT_PASSWORD: "1" # Set a random password for the root user
+        volumes:
+            - ./db:/var/lib/mysql:delegated
+    # Define the phpMyAdmin service
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest # Use the latest phpMyAdmin image
+        container_name: pma
+        restart: always # Always restart the container if it stops
+        environment:
+            PMA_HOST: db # Set the database host for phpMyAdmin
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # Set the root password for the database
+        ports:
+            - "8181:80" # Map port 8181 on the host to port 80 on the container
+        depends_on:
+            - db # Depend on the database service
+        links:
+            - db # Links on the database service
+    wordpress:
+        image: wordpress:latest
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: ${DB_USER_NAME}
+            WORDPRESS_DB_PASSWORD: ${DB_USER_PASSWORD}
+            WORDPRESS_DB_NAME: ${DB_NAME}
+        volumes:
+            - ./clothes-store:/var/www/html:delegated
+        depends_on:
+            - db # Depend on the database service
+        links:
+            - db # Links on the database service
+volumes:
+    clothes-store:
+    db:
