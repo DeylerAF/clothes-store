@@ -44,11 +44,11 @@ services:
             WORDPRESS_DB_PASSWORD: ${DB_USER_PASSWORD}
             WORDPRESS_DB_NAME: ${DB_NAME}
         volumes:
-            - ./clothes-store:/var/www/html:delegated
+            - ./app:/var/www/html:delegated
         depends_on:
             - db # Depend on the database service
         links:
             - db # Links on the database service
 volumes:
-    clothes-store:
+    app:
     db:
