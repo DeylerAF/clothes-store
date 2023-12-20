@@ -49,6 +49,8 @@ services:
             - db # Depend on the database service
         links:
             - db # Links on the database service
+        command: >
+            bash -c "chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html && apache2-foreground"
 volumes:
     app:
     db:
