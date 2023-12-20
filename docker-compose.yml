@@ -6,8 +6,8 @@ services:
         ports:
             - "${DB_PORT}:3306" # Map the port on the host to the port on the container
         command:
-            # - "--default-authentication-plugin=mysql_native_password" # Set the default authentication plugin for the database
             # - "--port=${DB_PORT}" # Set the default port for the database
+            - "--default-authentication-plugin=mysql_native_password" # Set the default authentication plugin for the database
             - "--character-set-server=utf8mb4" # Set the default character set for the database
             - "--collation-server=utf8mb4_unicode_ci" # Set the default collation for the database
         environment:
