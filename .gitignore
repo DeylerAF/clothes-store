@@ -50,3 +50,4 @@
 .env
 /db/*
 /img/*
+/files/*
